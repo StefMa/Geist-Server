@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Firebase libs -->
+  <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase-storage.js"></script>
+  <!-- Firebase init -->
+  <script src="../js/firebase_base.js"></script>
+  <!-- Firebase upload -->
+  <script src="../js/firebase_upload.js"></script>
+  <!-- Goo.gl URL Shortener Helper -->
+  <script src="../js/shortener.js"></script>
+</head>
+<body>
+  <script>
+    const ipc = require('electron').ipcRenderer
+
+    function uploadFile(file, filename) {
+      var uploadTask = uploadFileToStorage(file, filename)
+
+      // Listen for errors and completion of the upload.
+      uploadTask.on('state_changed', null, function(error) {
+        console.error('Upload failed:', error);
+
+        var code = error.code;
+        var message = error.message;
+
+        if (code == 'storage/unauthorized') {
+          showErrorDialog("Forbidden", "You are not allowed to upload files.");
+        }
+      }, function() {
+        console.log('Uploaded',uploadTask.snapshot.totalBytes,'bytes.');
+        console.log(uploadTask.snapshot.metadata);
+        var url = uploadTask.snapshot.metadata.downloadURLs[0];
+        console.log('File available at', url);
+
+        createShortUrl(url, config["apiKey"], (shortUrl) => {
+          // Send shortUrl back to MainRenderer
+          ipc.send('shortUrl', shortUrl)
+        });
+      });
+    }
+
+    window.onload = function() {
+
+      // Listen for tray events
+      ipc.on('onClick' , function(event , dataOfFile) {
+        if (firebase.auth().currentUser != null) {
+          console.log(dataOfFile);
+          var json = JSON.parse(dataOfFile);
+          console.log(json.base64);
+          console.log(json.mime);
+          console.log(json.filename);
+          var encodedData = window.atob(json.base64);
+          var byteNumbers = new Array(encodedData.length);
+          for (var i = 0; i < encodedData.length; i++) {
+              byteNumbers[i] = encodedData.charCodeAt(i);
+          }
+          var byteArray = new Uint8Array(byteNumbers);
+          var blob = new Blob([byteArray], {type: json.mime});
+          uploadFile(blob, json.filename);
+        } else {
+          ipc.send('error', '{"message" : "Something is going wrong. Try to login."}')
+        }
+      });
+    }
+  </script>
+</body>
+</html>

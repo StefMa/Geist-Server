@@ -1,0 +1,26 @@
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+
+.mdl-grid {
+  max-width: 1024px;
+  margin: auto;
+}
+
+.mdl-layout__header-row {
+  padding: 0;
+}
+
+.mdl-layout__header-row h3 {
+  color: #000;
+}
+
+.mdl-layout__content {
+  position: fixed;
+  top: 65%;
+  left: 50%;
+  width: 35em;
+  height: 20em;
+  margin-top: -10em; /*set to a negative number 1/2 of your height*/
+  margin-left: -15em; /*set to a negative number 1/2 of your width*/
+}
