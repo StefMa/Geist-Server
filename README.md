@@ -38,3 +38,21 @@ After you have installed the Firebase CLI tool
 You can just run
 
 `firebase deploy --project $YOUR_🔥BASE_PROJECTID`
+
+## Update/Release
+
+### Version
+If we update the server it is mandatory to update the [version](version) file.
+
+The version number should follow [these](http://semver.org/) specs.
+
+The name is just a random name and will be generated with [this](http://www.codenamegenerator.com/) tool.
+Don't use a prefix and suffix. The dictionary should point to `US Countries`
+
+### GitHub Release
+After we published we have to create a [GitHub Release](https://github.com/StefMa/Geist-Server/releases).
+
+For that we needed a tag which will be named as `release/vX.X.X`.
+The X.X.X represent the version we specified with the step above.
+
+It is also necessary to add a changelog.
