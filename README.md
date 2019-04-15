@@ -14,8 +14,8 @@ Before you start you have following these simple steps to setup `Geist Server` c
 ![api console. listed keys](art/restrict_browser_key.png)
 4. Enable only your Firebase Project domains.
 ![api console. enable own domain](art/restrict_domains.png)
-5. (Optional but recommended) Enable Goo.gl Shortener API.
-![api console. enable shortener api](art/enable_shortener_api.png)
+5. (Optional but recommended) Enable Firebase Dynamic Links. First you need to go to the dynamic links section in your Firebase console and create a new domain prefix (`*.page.link` are free to use).
+Then you have to addd the domain prefix to the `linkInfo.domainUriPrefix` variable inside the [`shortener.js`](js/shortener.js) 
 > **Note:** For the first time you are finish here.
 [Deploy](#deploy) the App and execute `Geist` client. Follow the steps on [Geist - creating a User](https://github.com/stefma/Geist).
 6. (Optional but recommended) Restrict your created user.
