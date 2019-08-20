@@ -3,11 +3,14 @@
 // Param 2: The API key
 // Param 3: The successfull callback (function) which will return the shortUrl as param
 function createShortUrl(longUrl, apiKey, callback) {
-  var req = new Object();
   var linkInfo = new Object();
   linkInfo.domainUriPrefix = "URL_PREFIX.page.link"
   linkInfo.link = longUrl
+  var suffix = new Object();
+  suffix.option = "UNGUESSABLE"
+  var req = new Object();
   req.dynamicLinkInfo = linkInfo
+  req.suffix = suffix
   var jsonBody = JSON.stringify(req);
 
   var xhr = new XMLHttpRequest();
