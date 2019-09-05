@@ -32,12 +32,13 @@
       }, function() {
         console.log('Uploaded',uploadTask.snapshot.totalBytes,'bytes.');
         console.log(uploadTask.snapshot.metadata);
-        var url = uploadTask.snapshot.metadata.downloadURLs[0];
-        console.log('File available at', url);
+        var url = uploadTask.snapshot.ref.getDownloadURL().then(function(url) {
+          console.log('File available at', url);
 
-        createShortUrl(url, config["apiKey"], (shortUrl) => {
-          // Send shortUrl back to MainRenderer
-          ipc.send('shortUrl', shortUrl)
+          createShortUrl(url, config["apiKey"], (shortUrl) => {
+            // Send shortUrl back to MainRenderer
+            ipc.send('shortUrl', shortUrl)
+          });
         });
       });
     }
